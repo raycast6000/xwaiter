@@ -4,7 +4,10 @@ pub struct SessionConfig {
     pub threads: u32,
 }
 
+// I love you mom
+
 impl SessionConfig {
+    // This basically creates a default configuration structure.
     pub fn new() -> Self {
         SessionConfig {
             directory: String::new(),

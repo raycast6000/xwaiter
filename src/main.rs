@@ -1,18 +1,19 @@
 mod config;
+use std::env;
 use crate::config::*;
 
-fn parse_args() -> Result<SessionConfig, ()> {
+fn parse_args(args: Vec<String>) -> Result<SessionConfig, ()> {
     let mut session_config: SessionConfig = SessionConfig::new();
 
-    session_config.set_port(6969).unwrap();
-    session_config.set_threads(32).unwrap();
-    session_config.set_directory("~/home/website").unwrap();
+    for argument in args {
+        println!("{}", argument);
+    }
 
     Ok(session_config)
 }
 
 fn main() {
-    let config: SessionConfig = match parse_args() {
+    let config: SessionConfig = match parse_args(env::args().collect()) {
         Ok(config) => config,
         Err(_) => return
     };
