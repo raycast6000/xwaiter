@@ -36,4 +36,12 @@ impl SessionConfig {
 
         Ok(())
     }
+
+    //I'm too lazy to do this in main, so I have to implement a function
+    pub fn get_full_address(&self) -> String {
+        let mut address = String::from("127.0.0.1:");
+
+        address.push_str(self.port.to_string().as_str());
+        address
+    }
 }

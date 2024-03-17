@@ -44,8 +44,8 @@ pub fn check_type(operator: &str, operand: &str) -> Command {
     match operator {
         "--port" => Command::PORT(String::from(operand).parse().expect("The provided value is not a valid port")),
         "--threads" => Command::THREADS(String::from(operand).parse().expect("The provided value is not a valid thread number")),
-        "--d" => Command::DIRECTORY(String::from(operand).parse().expect("The provided value is not a valid directory")),
-        "--directory" => Command::DIRECTORY(String::from(operand).parse().expect("The provided value is not a valid directory")),
+        "--d" => Command::DIRECTORY(String::from(operand)),
+        "--directory" => Command::DIRECTORY(String::from(operand)),
         _ => {
             println!("Invalid operation. Here's a list of operations and their values:");
             help_msg();
