@@ -15,13 +15,12 @@ fn main() {
                 help_msg();
                 return
             }
-
+            
             config
         },
         Err(_) => return
     };
 
     
-
     println!("Directory: {}\nPort: {}\nThreads: {}", config.directory, config.port, config.threads);
 }

@@ -40,7 +40,7 @@ pub fn help_msg() {
 }
 
 pub fn check_type(operator: &str, operand: &str) -> Command {
-    println!("{}", operand);
+    // println!("{}", operand);
     match operator {
         "--port" => Command::PORT(String::from(operand).parse().expect("The provided value is not a valid port")),
         "--threads" => Command::THREADS(String::from(operand).parse().expect("The provided value is not a valid thread number")),
@@ -59,12 +59,16 @@ pub fn parse_args(args: Vec<String>) -> Result<SessionConfig, ()> {
     let mut session_config: SessionConfig = SessionConfig::new();
     let mut index: usize = 1;
     let exception: Result<(), ()> =  loop {
-        if index >= args.len() { println!("Reached the end."); break Ok(()) }
+        if index >= args.len() { 
+            // println!("(optional) \t{}\t{}", argument, desc)
+            
+            break Ok(()) 
+        }
 
         let operator: &String = match args.get(index) {
             Some(argument) => argument,
             None => {
-                println!("Loop broke at index: {}", index);
+                //println!("Loop broke at index: {}", index);
                 break Ok(())
             }
         };
@@ -72,12 +76,12 @@ pub fn parse_args(args: Vec<String>) -> Result<SessionConfig, ()> {
         let operand: &String = match args.get(index + 1) {
             Some(argument) => argument,
             None => {
-                println!("Loop broke at index: {}", index);
+                //println!("Loop broke at index: {}", index);
                 break Ok(())
             }
         };
 
-        println!("TRTT\n-> {} {}", operator, operand);
+        //println!("TRTT\n-> {} {}", operator, operand);
         match check_type(operator.as_str(), operand.as_str()) {
             Command::PORT(port) => {
                 session_config.set_port(port).unwrap();
