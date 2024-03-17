@@ -1,17 +1,12 @@
 mod config;
+mod parser;
+
 use std::env;
+use crate::parser::*;
 use crate::config::*;
 
-fn parse_args(args: Vec<String>) -> Result<SessionConfig, ()> {
-    let mut session_config: SessionConfig = SessionConfig::new();
 
-    for argument in args {
-        println!("{}", argument);
-    }
-
-    Ok(session_config)
-}
-
+// srry i love splitting my code >:)
 fn main() {
     let config: SessionConfig = match parse_args(env::args().collect()) {
         Ok(config) => config,
