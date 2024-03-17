@@ -8,18 +8,35 @@ pub enum Command {
     INVALID
 }
 
+pub enum Description {
+    OPTIONAL(&'static str),
+    MANDATORY(&'static str)
+}
+
 pub fn help_msg() {
     let descriptions = HashMap::from([
-        ("--port 6969", "Host your files in a specific port. If undefined, it's 80."),
-        ("--directory /path/to/dir", "If this argument is not provided and there's no configuration file providing it, XWaiter won't start. This argument can be shortened as --d."),
-        ("--threads 4", "The amount of threads you want to use. If not provided, XWaiter will be single-threaded."),
+        ("--port 6969", Description::OPTIONAL("Host your files in a specific port. If undefined, it's 80.")),
+        ("--directory /path/to/dir", Description::MANDATORY("If this argument is not provided and there's no configuration file providing it, XWaiter won't start. This argument can be shortened as --d.")),
+        ("--threads 4", Description::OPTIONAL("The amount of threads you want to use. If not provided, XWaiter will be single-threaded.")),
     ]);
 
     for (argument, description) in descriptions {
-        println!("\n\t{} \n\t{}", argument, description);
+        match description {
+            Description::OPTIONAL(desc) => {
+                println!("\n(optional) \t{}\n          \t{}\n", argument, desc)
+            },
+
+            Description::MANDATORY(desc) =>{
+                println!("\n\t        {}\n          \t{}\n", argument, desc)
+            }
+        }
     }
 
-    println!("\nTip: You can override these arguments by using a configuration file.");
+    let mut example_config = SessionConfig::new();
+    example_config.set_directory("/path/to/dir");
+    example_config.set_port(6969);
+    
+    println!("\nArguments not marked as optional must be provided either by a configuration file or command line.\nTip: You can override these arguments by using a configuration file.\n\n## xwaiter.config.json - Example\n\n{}\n\n$ xwaiter", serde_json::to_string_pretty(&example_config).unwrap());
 }
 
 pub fn check_type(operator: &str, operand: &str) -> Command {
