@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+use serde_json;
+use std::fs;
 
 #[derive(Serialize, Deserialize)]
 pub struct SessionConfig {
@@ -32,7 +34,7 @@ impl SessionConfig {
     }
 
     pub fn set_directory(&mut self, directory: &str) -> Result<(), ()> {
-        self.directory.push_str(directory);
+        self.directory = directory.to_string();
 
         Ok(())
     }
@@ -43,5 +45,24 @@ impl SessionConfig {
 
         address.push_str(self.port.to_string().as_str());
         address
+    }
+
+    pub fn set_from_config_file(&mut self) {
+        let config_file = match fs::read_to_string("xwaiter.config.json") {
+            Ok(content) => content,
+            Err(_) => {
+                println!("Configuration file not found."); return
+            }
+        };
+
+        println!("{}", config_file);
+        let config: SessionConfig = match serde_json::from_str(config_file.as_str()) {
+            Ok(conf) => conf,
+            Err(_) => return
+        };
+
+        self.directory = config.directory;
+        self.port = config.port;
+        self.threads = config.threads;
     }
 }

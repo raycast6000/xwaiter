@@ -78,8 +78,6 @@ fn process_request(directory: &String, http_request: Vec<String>) -> String {
             return new_response.normalized()
         }
     }
-    
-    //let response = format!("HTTP/1.1 200 OK\r\nContent-Length: {reqf_len}\r\nX-Powered-By: XWaiter\r\n\r\n{request_file}");
 }
 
 fn handle_request(mut stream: &TcpStream, config: &SessionConfig) {
@@ -90,8 +88,8 @@ fn handle_request(mut stream: &TcpStream, config: &SessionConfig) {
         .take_while(|line| !line.is_empty())
         .collect();
 
-    println!("Connection established!");
-    println!("\n{:#?}", http_request);
+    println!("Incoming request..");
+    // println!("\n{:#?}", http_request);
 
     let response: String = process_request(&config.directory, http_request);
     
@@ -100,10 +98,10 @@ fn handle_request(mut stream: &TcpStream, config: &SessionConfig) {
 
 // srry i love splitting my code >:)
 fn main() {
-    let config: SessionConfig = match parse_args(env::args().collect()) {
+    let config: SessionConfig = match parse_config(env::args().collect()) {
         Ok(config) => {
             if config.directory.as_str() == "" {
-                println!("Please provide valid directory to host. Here's how to do it:");
+                println!("Please provide valid directory to host. You can provide a directory either by configuration or argument. See this:");
                 help_msg();
                 return
             }
@@ -117,13 +115,14 @@ fn main() {
     let address = config.get_full_address();
     let listener = TcpListener::bind(address.as_str()).unwrap();
 
+    println!("Directory: {}\nPort: 127.0.0.1:{}\nThreads: {}", config.directory, config.port, config.threads);
+
     for stream in listener.incoming() {
         let mut stream = stream.unwrap();
 
         handle_request(&mut stream, &config);
     }
 
-    println!("Directory: {}\nPort: {}\nThreads: {}", config.directory, config.port, config.threads);
 }
 
 

@@ -55,8 +55,11 @@ pub fn check_type(operator: &str, operand: &str) -> Command {
 }
 
 // This is the sexiest Rust function I ever wrote
-pub fn parse_args(args: Vec<String>) -> Result<SessionConfig, ()> {
+pub fn parse_config(args: Vec<String>) -> Result<SessionConfig, ()> {
     let mut session_config: SessionConfig = SessionConfig::new();
+
+    session_config.set_from_config_file();
+
     let mut index: usize = 1;
     let exception: Result<(), ()> =  loop {
         if index >= args.len() { 
