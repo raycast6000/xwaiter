@@ -23,5 +23,9 @@ Although the `--directory` argument is mandatory, if you don't want to use comma
 ```
 XWaiter automatically detects a configuration file if it's in the same directory as you.
 # Installation
-Since this project is in a very experimental stage, there are only Windows builds. \
+Just copy and paste this command:
+```bash
+cargo install --git https://github.com/raycast6000/xwaiter.git
+```
+### Windows (for normies)
 Go to [Releases](https://github.com/raycast6000/xwaiter/releases), download the latest MSI installer and just run it.
