@@ -56,7 +56,7 @@ impl Response {
 }
 
 // This shit returns a response
-fn process_request(directory: &String, http_request: Vec<&str>) -> String {
+fn process_request(directory: &String, http_request: Vec<String>) -> String {
     let mut file_path = String::new();
     file_path.push_str(directory.as_str());
     file_path.push_str(get_request_path(&http_request).as_str());
@@ -119,7 +119,6 @@ fn main() {
 
     for stream in listener.incoming() {
         let mut stream = stream.unwrap();
-
 
         handle_request(&mut stream, &config);
     }
