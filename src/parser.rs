@@ -58,7 +58,10 @@ pub fn check_type(operator: &str, operand: &str) -> Command {
 pub fn parse_config(args: Vec<String>) -> Result<SessionConfig, ()> {
     let mut session_config: SessionConfig = SessionConfig::new();
 
-    session_config.set_from_config_file();
+    match session_config.set_from_config_file() {
+        Ok(_) => {},
+        Err(()) => return Err(())
+    }
 
     let mut index: usize = 1;
     let exception: Result<(), ()> =  loop {

@@ -47,22 +47,26 @@ impl SessionConfig {
         address
     }
 
-    pub fn set_from_config_file(&mut self) {
+    pub fn set_from_config_file(&mut self) -> Result<(), ()> {
         let config_file = match fs::read_to_string("xwaiter.config.json") {
             Ok(content) => content,
             Err(_) => {
-                println!("Configuration file not found."); return
+                println!("Configuration file not found."); return Ok(())
             }
         };
 
-        println!("{}", config_file);
         let config: SessionConfig = match serde_json::from_str(config_file.as_str()) {
             Ok(conf) => conf,
-            Err(_) => return
+            Err(msg) => {
+                println!("An error occurred while reading your config file:\n\t{}\nYou can fix this by either completing the missing field/s or deleting the configuration file.\nNote that when you're using a configuration file you should run xwaiter without providing arguments. Just like this:\n$ xwaiter", msg);
+                return Err(())
+            }
         };
 
         self.directory = config.directory;
         self.port = config.port;
         self.threads = config.threads;
+
+        Ok(())
     }
 }

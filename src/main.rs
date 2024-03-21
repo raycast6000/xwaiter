@@ -61,7 +61,7 @@ fn process_request(directory: &String, http_request: Vec<String>) -> String {
     file_path.push_str(directory.as_str());
     file_path.push_str(get_request_path(&http_request).as_str());
 
-    println!("\n\t{}\n", file_path);
+    //println!("\n\t{}\n", file_path);
 
     match fs::read_to_string(file_path.as_str()) {
         Ok(content) => {
@@ -94,6 +94,7 @@ fn handle_request(mut stream: &TcpStream, config: &SessionConfig) {
     let response: String = process_request(&config.directory, http_request);
     
     stream.write_all(response.as_str().as_bytes()).unwrap();
+    println!("Successfully responded.");
 }
 
 // srry i love splitting my code >:)
@@ -115,7 +116,7 @@ fn main() {
     let address = config.get_full_address();
     let listener = TcpListener::bind(address.as_str()).unwrap();
 
-    println!("Directory: {}\nPort: 127.0.0.1:{}\nThreads: {}", config.directory, config.port, config.threads);
+    println!("Session Info:\n\tDirectory: {}\n\tPort: 127.0.0.1:{}\n\tThreads: {}", config.directory, config.port, config.threads);
 
     for stream in listener.incoming() {
         let mut stream = stream.unwrap();
