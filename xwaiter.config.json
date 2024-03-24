@@ -1,0 +1,5 @@
+{
+  "directory": ".",
+  "port": 6969,
+  "threads": 1
+}
